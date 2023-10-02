@@ -6,36 +6,42 @@ import com.sun.net.httpserver.Authenticator.Result;
 
 public class TopKFrequentElements {
 
-	public static void main(String[] args) {
-		
-		
-		int k=2;
-		HashMap<Integer ,Integer> h1= new HashMap<Integer,Integer>();
-		List list = new ArrayList();
-		int[] nums= {1,1,1,2,2,3};
-		for (int i : nums) {
-			if(h1.containsKey(i))
-				continue;
-			else
-				h1.put(i,1);
-		}
-		System.out.println(h1.entrySet());
-		 for (Map.Entry entry : h1.entrySet()){
-		//	 System.out.println(entry.getKey() + " " + entry.getValue());
-	         int i =(int) entry.getKey();
-	         if(i<=k) {
-	        	list.add(entry.getKey());
-	        	System.out.println(entry.getKey());
-	         }
-	      }
-		
-		 int[] arr = new int[list.size()];
-		 for(int b=0; b<list.size();b++) {
-			 arr[b]=(int) list.get(b);
-		 }
 	
-		
+	public int[] topKFrequent(int[] nums, int k) {
+        Map<Integer, Integer> count = new HashMap<>();
+        List<Integer> bucket[] = new ArrayList[nums.length + 1];                
+        
+        for (int num : nums)
+            count.merge(num, 1, Integer::sum);
+        
+        for (int key : count.keySet()){
+            int freq = count.get(key);
+            if (bucket[freq] == null)
+                bucket[freq] = new ArrayList<>();
+            bucket[freq].add(key);
+        }
+        
+        int index = 0;
+        int[] res = new int[k];
+        for (int i = nums.length; i >= 0; i--)
+            if (bucket[i] != null)
+                for (int val : bucket[i]){
+                    res[index++] = val;
+                    if(index == k)
+                        return res;
+                }
+        return res;
+        
 	
 	}
-
+	
+	
+	public static void main(String[] args) {
+		int[] arr = {1,1,1,2,2,3};
+		int k=2;
+		TopKFrequentElements elements = new TopKFrequentElements();
+		
+		System.out.println(Arrays.toString(elements.topKFrequent(arr, k)));
+		
+	}
 }
