@@ -10,6 +10,7 @@ public class BinarySearch {
 	public static void main(String[] args) {
 		
 		int [] nums = {-1,0,3,5,9,12};
+		int k=nums.length-1;
 		int target = 0;
 		int left =0;
 		int right= nums.length-1;
